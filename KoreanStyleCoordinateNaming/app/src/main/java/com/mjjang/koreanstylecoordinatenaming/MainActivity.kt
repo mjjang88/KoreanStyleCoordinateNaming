@@ -3,6 +3,7 @@ package com.mjjang.koreanstylecoordinatenaming
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.mjjang.koreanstylecoordinatenaming.ui.main.MainFragment
+import com.mjjang.koreanstylecoordinatenaming.util.CoordConverterUtil
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,5 +15,7 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.container, MainFragment.newInstance())
                     .commitNow()
         }
+
+        CoordConverterUtil.importWords(this)
     }
 }

@@ -11,6 +11,12 @@ object CoordConverterUtil {
     val wordMap = HashMap<Int, String> (3000)
     val wordMapReverse = HashMap<String, Int> (3000)
 
+    val MIN_X = 670000
+    val MAX_X = 1400000
+    val MIN_Y = 1370000
+    val MAX_Y = 2100000
+    val SEPERATE_FACTOR = 73000
+
     fun importWords(context: Context) {
         val assetManager = context.resources.assets
 
@@ -28,6 +34,24 @@ object CoordConverterUtil {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
 
+    fun getKrCoordName(x: Int, y: Int) : String {
+        if (!isCoordValid(x, y)) {
+            return "Invalid"
+        }
+
+        val sum = ((x - MIN_X) / 10) + (((y - MIN_Y) / 10) * SEPERATE_FACTOR)
+
+        val s1Index = sum / wordMap.size
+        val s2Index = (sum % wordMap.size) / wordMap.size
+        val s3Index = (sum % wordMap.size) % wordMap.size
+
+        return "${wordMap[s1Index]}${wordMap[s2Index]}${wordMap[s3Index]}"
+    }
+
+
+    fun isCoordValid(x: Int, y: Int): Boolean {
+        return x in MIN_X..MAX_X && y in MIN_Y..MAX_Y
     }
 }
