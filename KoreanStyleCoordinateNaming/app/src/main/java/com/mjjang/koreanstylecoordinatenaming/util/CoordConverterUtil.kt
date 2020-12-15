@@ -1,6 +1,8 @@
 package com.mjjang.koreanstylecoordinatenaming.util
 
 import android.content.Context
+import com.naver.maps.geometry.Coord
+import com.naver.maps.geometry.Utmk
 import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.io.InputStream
@@ -36,7 +38,7 @@ object CoordConverterUtil {
         }
     }
 
-    fun getKrCoordName(x: Int, y: Int) : String {
+    fun getKrCoordNameFromUtmk(x: Int, y: Int) : String {
         if (!isCoordValid(x, y)) {
             return "Invalid"
         }
@@ -50,6 +52,22 @@ object CoordConverterUtil {
         return "${wordMap[s1Index]}${wordMap[s2Index]}${wordMap[s3Index]}"
     }
 
+    fun getUtmkFromName(name: String) : Utmk {
+        var s1 = 0
+        var s2 = 0
+        var s3 = 0
+        wordMapReverse[name[0].toString()]?.let {
+            s1 = it * wordMap.size * wordMap.size
+        }
+        wordMapReverse[name[1].toString()]?.let {
+            s2 = it * wordMap.size
+        }
+        wordMapReverse[name[2].toString()]?.let {
+            s3 = it
+        }
+        val sum = s1 + s2 + s3
+        return Utmk((sum % SEPERATE_FACTOR).toDouble() + 5, (sum / SEPERATE_FACTOR).toDouble() + 5)
+    }
 
     fun isCoordValid(x: Int, y: Int): Boolean {
         return x in MIN_X..MAX_X && y in MIN_Y..MAX_Y
