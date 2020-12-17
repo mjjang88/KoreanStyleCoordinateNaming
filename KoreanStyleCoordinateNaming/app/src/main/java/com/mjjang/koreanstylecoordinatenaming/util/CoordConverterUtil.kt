@@ -53,20 +53,20 @@ object CoordConverterUtil {
     }
 
     fun getUtmkFromName(name: String) : Utmk {
-        var s1 = 0
-        var s2 = 0
-        var s3 = 0
+        var s1: Long = 0
+        var s2: Long = 0
+        var s3: Long = 0
         wordMapReverse[name[0].toString()]?.let {
-            s1 = it * wordMap.size * wordMap.size
+            s1 = it.toLong() * wordMap.size * wordMap.size
         }
         wordMapReverse[name[1].toString()]?.let {
-            s2 = it * wordMap.size
+            s2 = it.toLong() * wordMap.size
         }
         wordMapReverse[name[2].toString()]?.let {
-            s3 = it
+            s3 = it.toLong()
         }
         val sum = s1 + s2 + s3
-        return Utmk((sum % SEPERATE_FACTOR).toDouble() + 5, (sum / SEPERATE_FACTOR).toDouble() + 5)
+        return Utmk((sum % SEPERATE_FACTOR).toDouble() + MIN_X + 5, (sum / SEPERATE_FACTOR).toDouble() + MIN_Y + 5)
     }
 
     fun isCoordValid(x: Int, y: Int): Boolean {
